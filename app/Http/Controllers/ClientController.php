@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
@@ -35,16 +36,41 @@ class ClientController extends Controller
      */
     public function store(Request $request)
     {
-        $newClient = new Client();
-        $newClient->name = $request->input('modalName');
-        $newClient->surname = $request->input('modalSurname');
-        $newClient->email = $request->input('modalEmail');
-        $newClient->xapikey = $request->input('modalxapikey');
-        $newClient->status = $request->input('modalStatus');
-        $newClient->isActive = $request->input('modalIsActive');
-        $newClient->save();
+        switch ($request->submitButton) {
+            case 'userAdd':
+                $newClient = new Client();
+                $newClient->name = $request->input('modalName');
+                $newClient->surname = $request->input('modalSurname');
+                $newClient->email = $request->input('modalEmail');
+                $newClient->xapikey = $request->input('modalxapikey');
+                $newClient->status = $request->input('modalStatus');
+                $newClient->isActive = $request->input('modalIsActive');
+                $newClient->save();
 
-        return redirect('successfullyAdded');
+                return redirect('successfullyAdded');
+                break;
+
+            case 'userUpdate':
+                // DB::table('clients')
+                //     ->where('email', $request->input('modalEmail'))
+                //     ->update([
+                //         'name' => $request->input('modalName'),
+                //         'surname' => $request->input('modalSurname'),
+                //         'status' => $request->input('modalStatus'),
+                //         'isActive' => $request->input('modalIsActive')
+                //     ]);
+                // return redirect('successfullyUpdated');
+
+                Client::where('email', $request->input('modalEmail'))
+                    ->update([
+                        'name' => $request->input('modalName'),
+                        'surname' => $request->input('modalSurname'),
+                        'status' => $request->input('modalStatus'),
+                        'isActive' => $request->input('modalIsActive')
+                    ]);
+                return redirect('successfullyUpdated');
+                break;
+        }
     }
 
     /**

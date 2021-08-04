@@ -107,6 +107,8 @@
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+
+
                 <form action="{{ url('addUser') }}" class="was-validated" method="post">
 
                     @csrf {{ csrf_field() }}
@@ -135,15 +137,7 @@
                             <label for="modalEmail">Email address</label>
                         </div>
 
-                        {{-- SHOW X-API-KEY --}}
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control is-valid" id="modalxapikey2" name="modalxapikey2"
-                                placeholder="modalxapikey" required disabled>
-                            <label for="modalxapikey">X-API-KEY</label>
-                        </div>
-
-                        {{-- HIDDEN X-API-KEY --}}
-                        <div class="form-floating mb-3" style="display: none">
                             <input type="text" class="form-control is-valid" id="modalxapikey" name="modalxapikey"
                                 placeholder="modalxapikey" required>
                             <label for="modalxapikey">X-API-KEY</label>
@@ -170,9 +164,10 @@
                     <div class="modal-footer">
                         <button id="closeBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="modalClearInput()">Close</button>
-                        <button id="addBtn" type="submit" class="btn btn-success"
+                        <button id="addBtn" name="submitButton" type="submit" value="userAdd" class="btn btn-success"
                             onclick="modalClearInput()">Add</button>
-                        <button id="saveBtn" type="submit" class="btn btn-primary" onclick="modalSave()">Save</button>
+                        <button id="saveBtn" name="submitButton" type="submit" value="userUpdate"
+                            class="btn btn-primary">Save</button>
                     </div>
                 </form>
 
@@ -182,16 +177,14 @@
     </div>
 
 
-    {{-- https://stackoverflow.com/questions/39205820/laravel-5-1-one-form-two-submit-buttons --}}
-
-
     <script>
         $("#modalIsActive").change(function() {
             if ($("#modalIsActive").prop("checked")) {
                 $("#modalIsActive").val(1);
             } else {
-                $("#modalIsActive").val(0);
+                $("#modalIsActive").val(2);
             }
+            console.log($("#modalIsActive").val());
         }).change();
 
 
@@ -208,7 +201,6 @@
                 (i % 4 == 0 && i != 0) ? xapikey += "-": rand = parseInt(Math.random() * 62);
                 xapikey += letters[rand];
             }
-            $("#modalxapikey2").val(xapikey);
             $("#modalxapikey").val(xapikey);
         }
 
@@ -216,7 +208,6 @@
             $("#modalName").val("");
             $("#modalSurname").val("");
             $("#modalEmail").val("");
-            $("#modalxapikey2").val("");
             $("#modalxapikey").val("");
             $("#modalStatus").val("");
             $("#modalIsActive").val("");
@@ -227,16 +218,22 @@
             $("#addBtn").hide();
             $("#saveBtn").show();
 
+
             $("#modalName").val($("#name-" + selectedRow).text());
             $("#modalSurname").val($("#surname-" + selectedRow).text());
             $("#modalEmail").val($("#email-" + selectedRow).text());
-            $("#modalxapikey2").attr('display', true);
-            $("#modalxapikey2").val($("#xapikey-" + selectedRow).text());
+            $("#modalxapikey").val($("#xapikey-" + selectedRow).text());
             $("#modalStatus").val($("#status-" + selectedRow).text());
-            $("#modalIsActive").val($("#isActive-" + selectedRow).val());
+            if ($("#isActive-" + selectedRow).text() == 1) {
+                $("#modalIsActive").prop('checked', true);
+                $("#modalIsActive").val(1);
+                console.log($("#modalIsActive").val());
+            } else {
+                $("#modalIsActive").prop('checked', false);
+                $("#modalIsActive").val(2);
+                console.log($("#modalIsActive").val());
 
-
-            $("#modalEmail").attr('disabled', true);
+            }
         }
 
         function deleteBtn() {

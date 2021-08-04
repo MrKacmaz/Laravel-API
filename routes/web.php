@@ -29,3 +29,4 @@ require __DIR__ . '/auth.php';
 
 Route::post('/addUser', [ClientController::class, 'store']);
 Route::get('/successfullyAdded', [ClientController::class, 'show']);
+Route::get('/successfullyUpdated', [ClientController::class, 'show']);
