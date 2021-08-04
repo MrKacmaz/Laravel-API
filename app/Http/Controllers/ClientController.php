@@ -51,16 +51,6 @@ class ClientController extends Controller
                 break;
 
             case 'userUpdate':
-                // DB::table('clients')
-                //     ->where('email', $request->input('modalEmail'))
-                //     ->update([
-                //         'name' => $request->input('modalName'),
-                //         'surname' => $request->input('modalSurname'),
-                //         'status' => $request->input('modalStatus'),
-                //         'isActive' => $request->input('modalIsActive')
-                //     ]);
-                // return redirect('successfullyUpdated');
-
                 Client::where('email', $request->input('modalEmail'))
                     ->update([
                         'name' => $request->input('modalName'),
@@ -114,8 +104,10 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client)
+    public function destroy(Client $client, $id)
     {
-        //
+        // Flight::where('active', 0)->delete();
+        Client::where('id', $id)->delete();
+        return redirect('deletedSuccessfully');
     }
 }

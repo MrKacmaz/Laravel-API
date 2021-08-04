@@ -23,10 +23,10 @@
 
             <!-- Sweet alert src -->
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-            <link rel="stylesheet" href="style.css">
         </head>
+
         <h2 class="font-semibold w3-xlarge w3-text-dark-grey w3-hover-text-deep-orange leading-tight">
-            {{ __('WEB CLIENT CREATOR') }}
+            {{ __('Web Client Creator') }}
         </h2>
     </x-slot>
 
@@ -42,7 +42,11 @@
         <div class="row">
             <div class="col-1"></div>
             <div class="col-10">
-                <table id="refTable" class="table table-sm text-center">
+                <h3 id="welcomeMessage" class="w3-text-grey w3-hover-text-deep-orange text-center">The client database
+                    is
+                    empty. You can add a new client by using the upper
+                    button.</h3>
+                <table id="refTable" class="table text-center">
 
                     <thead id="thead">
                         <tr>
@@ -60,35 +64,41 @@
                     <tbody id="tbody">
 
                         @foreach ($clients as $client)
+                            <form action="{{ url('deleteUser/' . $client->id) }}" method="post">
+                                @csrf {{ csrf_field() }}
+                                <tr>
+                                    <td id="id{{ '-' . $client->id }}" scope="col">{{ $client->id }}</td>
+                                    <td id="name{{ '-' . $client->id }}" scope="col">{{ $client->name }}</td>
+                                    <td id="surname{{ '-' . $client->id }}" scope="col">{{ $client->surname }}</td>
+                                    <td id="email{{ '-' . $client->id }}" scope="col">{{ $client->email }}</td>
+                                    <td id="xapikey{{ '-' . $client->id }}" scope="col">{{ $client->xapikey }}
+                                    </td>
+                                    <td id="status{{ '-' . $client->id }}" scope="col">{{ $client->status }}</td>
+                                    <td id="isActive{{ '-' . $client->id }}" scope="col">{{ $client->isActive }}
+                                    </td>
+                                    <td id="buttons{{ '-' . $client->id }}" scope="col">
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <button type="button" data-bs-toggle="modal"
+                                                onclick="updateBtn({{ $client->id }})"
+                                                data-bs-target="#staticBackdrop" class="btn-outline-info"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                    fill="currentColor" class="bi bi-arrow-up-square-fill"
+                                                    viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
+                                                </svg></button>
 
-                            <tr>
-                                <td id="id{{ '-' . $client->id }}" scope="col">{{ $client->id }}</td>
-                                <td id="name{{ '-' . $client->id }}" scope="col">{{ $client->name }}</td>
-                                <td id="surname{{ '-' . $client->id }}" scope="col">{{ $client->surname }}</td>
-                                <td id="email{{ '-' . $client->id }}" scope="col">{{ $client->email }}</td>
-                                <td id="xapikey{{ '-' . $client->id }}" scope="col">{{ $client->xapikey }}</td>
-                                <td id="status{{ '-' . $client->id }}" scope="col">{{ $client->status }}</td>
-                                <td id="isActive{{ '-' . $client->id }}" scope="col">{{ $client->isActive }}</td>
-                                <td id="buttons{{ '-' . $client->id }}" scope="col">
-                                    <div class="btn-group btn-group-sm" role="group">
-                                        <button type="button" data-bs-toggle="modal"
-                                            onclick="updateBtn({{ $client->id }})" data-bs-target="#staticBackdrop"
-                                            class="btn-outline-info"><svg xmlns="http://www.w3.org/2000/svg" width="32"
-                                                height="32" fill="currentColor" class="bi bi-arrow-up-square-fill"
-                                                viewBox="0 0 16 16">
-                                                <path
-                                                    d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z" />
-                                            </svg></button>
-                                        <button type="button" class="btn-outline-danger" onclick="deleteBtn()"><svg
-                                                xmlns="http://www.w3.org/2000/svg" width="32" height="32"
-                                                fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
-                                            </svg></button>
-                                    </div>
-                                </td>
+                                            <button type="submit" class="btn-outline-danger"><svg
+                                                    xmlns="http://www.w3.org/2000/svg" width="32" height="32"
+                                                    fill="currentColor" class="bi bi-x-square-fill" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm3.354 4.646L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708z" />
+                                                </svg></button>
+                                        </div>
+                                    </td>
 
-                            </tr>
+                                </tr>
+                            </form>
                         @endforeach
 
                     </tbody>
@@ -117,6 +127,7 @@
                         <h5 class="modal-title" id="staticBackdropLabel">New Client Add</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+
                     <div class="modal-body">
 
                         <div class="form-floating mb-3">
@@ -143,7 +154,7 @@
                             <label for="modalxapikey">X-API-KEY</label>
                         </div>
 
-                        <div class="form-floating">
+                        <div class="form-floating mb-3">
                             <select class="form-select is-valid" id="modalStatus" name="modalStatus">
                                 <option value="user">User</option>
                                 <option value="admin">Admin</option>
@@ -151,12 +162,12 @@
                             <label for="modalStatus">Client Status</label>
                         </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input is-valid" type="checkbox" value="" id="modalIsActive"
-                                name="modalIsActive">
-                            <label class="form-check-label" for="modalIsActive">
-                                Active or Deactive
-                            </label>
+                        <div class="form-floating mb-3">
+                            <select class="form-select is-valid" id="modalIsActive" name="modalIsActive">
+                                <option value="1">Active</option>
+                                <option value="0">Deactive</option>
+                            </select>
+                            <label for="modalIsActive">Is Active</label>
                         </div>
 
                     </div>
@@ -164,28 +175,32 @@
                     <div class="modal-footer">
                         <button id="closeBtn" type="button" class="btn btn-secondary" data-bs-dismiss="modal"
                             onclick="modalClearInput()">Close</button>
-                        <button id="addBtn" name="submitButton" type="submit" value="userAdd" class="btn btn-success"
-                            onclick="modalClearInput()">Add</button>
+                        <button id="addBtn" name="submitButton" type="submit" value="userAdd"
+                            class="btn btn-success">Add</button>
                         <button id="saveBtn" name="submitButton" type="submit" value="userUpdate"
                             class="btn btn-primary">Save</button>
                     </div>
+
                 </form>
 
             </div>
 
         </div>
+
     </div>
 
 
     <script>
-        $("#modalIsActive").change(function() {
-            if ($("#modalIsActive").prop("checked")) {
-                $("#modalIsActive").val(1);
+        $(document).ready(function() {
+            if ($("#refTable > tbody > tr").length == 0) {
+                $("#refTable").hide();
+                $("#welcomeMessage").show();
+
             } else {
-                $("#modalIsActive").val(2);
+                $("#refTable").show();
+                $("#welcomeMessage").hide();
             }
-            console.log($("#modalIsActive").val());
-        }).change();
+        });
 
 
         function xApiKeyCreator() {
@@ -218,33 +233,47 @@
             $("#addBtn").hide();
             $("#saveBtn").show();
 
+            console.log($("#isActive-" + selectedRow).text());
+
 
             $("#modalName").val($("#name-" + selectedRow).text());
             $("#modalSurname").val($("#surname-" + selectedRow).text());
             $("#modalEmail").val($("#email-" + selectedRow).text());
             $("#modalxapikey").val($("#xapikey-" + selectedRow).text());
             $("#modalStatus").val($("#status-" + selectedRow).text());
-            if ($("#isActive-" + selectedRow).text() == 1) {
-                $("#modalIsActive").prop('checked', true);
-                $("#modalIsActive").val(1);
-                console.log($("#modalIsActive").val());
-            } else {
-                $("#modalIsActive").prop('checked', false);
-                $("#modalIsActive").val(2);
-                console.log($("#modalIsActive").val());
+            $("#modalIsActive").val($("#isActive-" + selectedRow).text());
 
-            }
         }
 
-        function deleteBtn() {
+        function deleteBtn(selectedRow) {
             swal({
-                    title: "Are you sure to delete the Client?",
+                    title: "Are you sure to delete the Client with id = " + selectedRow + " ?",
                     icon: "warning",
                     buttons: true,
                     dangerMode: true,
                 })
                 .then((willDelete) => {
                     if (willDelete) {
+
+                        // ------------------ ERRROR ------------------
+                        // $.ajax({
+                        //     headers: {
+                        //         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        //     },
+                        //     type: "POST",
+                        //     url: '/deleteUser',
+                        //     data: {
+                        //         id: selectedRow,
+                        //         _token: token
+                        //     },
+                        //     success: function(data) {
+                        //         console.log(data);
+                        //     },
+                        //     error: function(data, textStatus, errorThrown) {
+                        //         console.log(data);
+
+                        //     },
+                        // });
 
 
                         swal("Client has been deleted", {
@@ -254,10 +283,6 @@
                         swal("Client is safe!");
                     }
                 });
-        }
-
-        function modalSave() {
-            alert("afskaygdalksd");
         }
     </script>
 

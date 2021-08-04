@@ -28,5 +28,8 @@ require __DIR__ . '/auth.php';
 
 
 Route::post('/addUser', [ClientController::class, 'store']);
+Route::post('/deleteUser/{id}', [ClientController::class, 'destroy']);
+
 Route::get('/successfullyAdded', [ClientController::class, 'show']);
 Route::get('/successfullyUpdated', [ClientController::class, 'show']);
+Route::get('/deletedSuccessfully', [ClientController::class, 'show']);
