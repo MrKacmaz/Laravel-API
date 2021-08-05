@@ -22,12 +22,13 @@ class ClientController extends Controller
         foreach ($allClients as $client) {
             $details = [
                 'title' => 'KACMAZ CLIENT API SYSTEM',
-                'body' => 'Client X-API-KEY',
-                'xapikey' => $client->xapikey
+                'body' => 'Client X-API-KEY'
             ];
+            $xapikey = $client->xapikey;
 
-            // Mail::to($client->email)->send(new MailSender($details));
+            Mail::to($client->email)->send(new MailSender($details, $xapikey));
         }
+        return redirect('sendMailToAll');
     }
 
     /**
@@ -119,7 +120,7 @@ class ClientController extends Controller
     public function destroy(Client $client, $id, Request $request)
     {
         switch ($request->operationsButton) {
-            
+
             case 'deleteSelectedUser':
                 Client::where('id', $id)->delete();
                 return redirect('deletedSuccessfully');
@@ -136,6 +137,7 @@ class ClientController extends Controller
                     ];
                     Mail::to($i->email)->send(new MailSender($details, $currentUserApiKey));
                 }
+                return redirect('/mailSend');
                 break;
 
             default:

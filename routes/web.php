@@ -35,6 +35,8 @@ Route::post('/userOperations/{id}', [ClientController::class, 'destroy']);
 Route::get('/successfullyAdded', [ClientController::class, 'show']);
 Route::get('/successfullyUpdated', [ClientController::class, 'show']);
 Route::get('/deletedSuccessfully', [ClientController::class, 'show']);
+Route::get('/mailSend', [ClientController::class, 'show']);
+Route::get('/sendMailToAll', [ClientController::class, 'show']);
 
 // Send Email
 Route::get('sendMail', [ClientController::class, 'index']);
