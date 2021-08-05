@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Mail\MailSender;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,8 +30,11 @@ require __DIR__ . '/auth.php';
 
 
 Route::post('/addUser', [ClientController::class, 'store']);
-Route::post('/deleteUser/{id}', [ClientController::class, 'destroy']);
+Route::post('/userOperations/{id}', [ClientController::class, 'destroy']);
 
 Route::get('/successfullyAdded', [ClientController::class, 'show']);
 Route::get('/successfullyUpdated', [ClientController::class, 'show']);
 Route::get('/deletedSuccessfully', [ClientController::class, 'show']);
+
+// Send Email
+Route::get('sendMail', [ClientController::class, 'index']);

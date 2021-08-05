@@ -35,6 +35,7 @@ return [
 
     'mailers' => [
         'smtp' => [
+            'driver' => env('MAIL_DRIVER', 'smtp'),
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
@@ -43,6 +44,7 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
+            'pretend' => false,
         ],
 
         'ses' => [

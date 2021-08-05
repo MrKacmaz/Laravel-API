@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\MailSender;
 use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -15,7 +17,17 @@ class ClientController extends Controller
      */
     public function index(Request $req)
     {
-        //
+        $allClients = Client::all();
+
+        foreach ($allClients as $client) {
+            $details = [
+                'title' => 'KACMAZ CLIENT API SYSTEM',
+                'body' => 'Client X-API-KEY',
+                'xapikey' => $client->xapikey
+            ];
+
+            // Mail::to($client->email)->send(new MailSender($details));
+        }
     }
 
     /**
@@ -104,10 +116,31 @@ class ClientController extends Controller
      * @param  \App\Models\Client  $client
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Client $client, $id)
+    public function destroy(Client $client, $id, Request $request)
     {
-        // Flight::where('active', 0)->delete();
-        Client::where('id', $id)->delete();
-        return redirect('deletedSuccessfully');
+        switch ($request->operationsButton) {
+            
+            case 'deleteSelectedUser':
+                Client::where('id', $id)->delete();
+                return redirect('deletedSuccessfully');
+                break;
+
+
+            case 'sendMailSelectedUser':
+                $selectedUser = Client::where('id', $id)->get();
+                foreach ($selectedUser as $i) {
+                    $currentUserApiKey = $i->xapikey;
+                    $details = [
+                        'title' => 'KACMAZ CLIENT API SYSTEM',
+                        'body' => 'Client X-API-KEY'
+                    ];
+                    Mail::to($i->email)->send(new MailSender($details, $currentUserApiKey));
+                }
+                break;
+
+            default:
+                dd("hataaa");
+                break;
+        }
     }
 }
