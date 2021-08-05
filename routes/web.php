@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\ClientController;
-use App\Mail\MailSender;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Mail;
+use App\Http\Controllers\JsonApiController;
+use App\Http\Middleware\JsonApi;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -19,9 +20,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth'])->name('dashboard');
+
 Route::get('/dashboard', [ClientController::class, 'show'])->middleware(['auth'])->name('dashboard');
 
 
@@ -36,7 +35,13 @@ Route::get('/successfullyAdded', [ClientController::class, 'show']);
 Route::get('/successfullyUpdated', [ClientController::class, 'show']);
 Route::get('/deletedSuccessfully', [ClientController::class, 'show']);
 Route::get('/mailSend', [ClientController::class, 'show']);
-Route::get('/sendMailToAll', [ClientController::class, 'show']);
 
 // Send Email
 Route::get('sendMail', [ClientController::class, 'index']);
+Route::get('/sendMailToAll', [ClientController::class, 'show']);
+
+// Send Json Api
+Route::get('/get', [JsonApiController::class, 'show'])->middleware(JsonApi::class);
+Route::post('/post', [JsonApiController::class, 'store'])->middleware(JsonApi::class);
+Route::put('/put', [JsonApiController::class, 'update'])->middleware(JsonApi::class);
+Route::delete('/delete', [JsonApiController::class, 'destroy'])->middleware(JsonApi::class);

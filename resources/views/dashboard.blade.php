@@ -231,8 +231,8 @@
             var xapikey = "";
             var rand;
             for (let i = 0; i < 16; i++) {
-                rand = parseInt(Math.random() * 62);
-                (i % 4 == 0 && i != 0) ? xapikey += "-": rand = parseInt(Math.random() * 62);
+                rand = parseInt(Math.random() * letters.length);
+                (i % 4 == 0 && i != 0) ? xapikey += "-": rand = parseInt(Math.random() * letters.length);
                 xapikey += letters[rand];
             }
             $("#modalxapikey").val(xapikey);
