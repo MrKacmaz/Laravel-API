@@ -41,7 +41,8 @@ Route::get('sendMail', [ClientController::class, 'index']);
 Route::get('/sendMailToAll', [ClientController::class, 'show']);
 
 // Send Json Api
-Route::get('/get', [JsonApiController::class, 'show'])->middleware(JsonApi::class);
-Route::post('/post', [JsonApiController::class, 'store'])->middleware(JsonApi::class);
-Route::put('/put', [JsonApiController::class, 'update'])->middleware(JsonApi::class);
-Route::delete('/delete', [JsonApiController::class, 'destroy'])->middleware(JsonApi::class);
+// http://localhost/?xapikey=Miuz-7V6k-eeEO-Pixc
+Route::get('http://localhost/get/?xapikey={xapikey}', [JsonApiController::class, 'show'])->middleware(JsonApi::class);
+Route::get('/post', [JsonApiController::class, 'store'])->middleware(JsonApi::class);
+Route::get('/put', [JsonApiController::class, 'update'])->middleware(JsonApi::class);
+Route::get('/delete', [JsonApiController::class, 'destroy'])->middleware(JsonApi::class);

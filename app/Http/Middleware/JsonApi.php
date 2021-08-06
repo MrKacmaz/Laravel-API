@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Client;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -14,9 +15,14 @@ class JsonApi
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, $xapikey)
     {
-        dd($request);
-        return $next($request);
+        dd($xapikey);
+        $allClients = Client::all();
+        foreach ($allClients as $client) {
+            if ($client->xapikey === $xapikey && $request->isActive === 1) {
+                return $next($request);
+            }
+        }
     }
 }
