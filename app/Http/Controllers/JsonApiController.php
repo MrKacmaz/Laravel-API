@@ -35,7 +35,25 @@ class JsonApiController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'UID' => 'required|max:150',
+            'xapikey' => 'required|max:150',
+            'userName' => 'required|max:150',
+            'userSurname' => 'required|max:150',
+            'userEmail' => 'required|max:50',
+            'userPhone' => 'required|max:11',
+        ]);
+
+        $insertData = new jsonApi();
+        $insertData->UID = $request->UID;
+        $insertData->xapikey = $request->xapikey;
+        $insertData->status = 'user';
+        $insertData->userName = $request->userName;
+        $insertData->userSurname = $request->userSurname;
+        $insertData->userEmail = $request->userEmail;
+        $insertData->userPhone = $request->userPhone;
+        $insertData->save();
+        return response()->json(['message' => 'data added successfully'], 200);
     }
 
     /**
@@ -46,7 +64,8 @@ class JsonApiController extends Controller
      */
     public function show(jsonApi $jsonApi)
     {
-        //
+        $data = jsonApi::all();
+        return response()->json(['message' => 'successfull', 'data' => $data], 200);
     }
 
     /**
@@ -67,9 +86,48 @@ class JsonApiController extends Controller
      * @param  \App\Models\jsonApi  $jsonApi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, jsonApi $jsonApi)
+    public function update(Request $request, $id)
     {
-        //
+
+
+        $request->validate([
+            'UID' => 'required|max:150',
+            'xapikey' => 'required|max:150',
+            'userName' => 'required|max:150',
+            'userSurname' => 'required|max:150',
+            'userEmail' => 'required|max:50',
+            'userPhone' => 'required|max:11',
+        ]);
+
+        jsonApi::where('id', $id)->update([
+            'UID' => $request->UID,
+            'xapikey' => $request->xapikey,
+            'status' => 'user',
+            'userName' => $request->userName,
+            'userSurname' => $request->userSurname,
+            'userEmail' => $request->userEmail,
+            'userPhone' => $request->userPhone
+        ]);
+
+        return response()->json(['message' => 'data updated successfully'], 200);
+
+
+        // if ($updateData) {
+
+        //     $updateData->update([
+        //         'UID' => $request->UID,
+        //         'xapikey' => $request->xapikey,
+        //         'status' => 'user',
+        //         'userName' => $request->userName,
+        //         'userSurname' => $request->userSurname,
+        //         'userEmail' => $request->userEmail,
+        //         'userPhone' => $request->userPhone
+        //     ]);
+
+        //     return response()->json(['message' => 'data updated successfully'], 200);
+        // } else {
+        //     return response()->json(['message' => 'data not found!'], 404);
+        // }
     }
 
     /**
@@ -78,8 +136,15 @@ class JsonApiController extends Controller
      * @param  \App\Models\jsonApi  $jsonApi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(jsonApi $jsonApi)
+    public function destroy($id)
     {
-        //
+        $data = jsonApi::where('id', $id);
+
+        if ($data) {
+            $data->delete();
+            return response()->json(['message' => 'deleted successfully', 'data' => $data], 200);
+        } else {
+            return response()->json(['message' => 'data not found!', 'data' => $data], 404);
+        }
     }
 }

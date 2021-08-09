@@ -7,6 +7,7 @@ use App\Models\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Redis;
 
 class ClientController extends Controller
 {
@@ -28,7 +29,7 @@ class ClientController extends Controller
 
             Mail::to($client->email)->send(new MailSender($details, $xapikey));
         }
-        return redirect('sendMailToAll');
+        return redirect('mailSendedToAll');
     }
 
     /**
@@ -141,8 +142,8 @@ class ClientController extends Controller
                 break;
 
             default:
-                dd("hataaa");
+                dd("Error in Client Controller destroy function");
                 break;
         }
-    }
+    } 
 }
