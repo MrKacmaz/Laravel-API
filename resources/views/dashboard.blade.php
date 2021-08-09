@@ -255,8 +255,6 @@
             $("#addBtn").hide();
             $("#saveBtn").show();
 
-            console.log($("#isActive-" + selectedRow).text());
-
 
             $("#modalName").val($("#name-" + selectedRow).text());
             $("#modalSurname").val($("#surname-" + selectedRow).text());

@@ -16,10 +16,11 @@ use App\Http\Controllers\JsonApiController;
 |
 */
 
-Route::post('json/post', [JsonApiController::class, 'store']);
-Route::get('json/get', [JsonApiController::class, 'show']);
-Route::put('json/put/{id}', [JsonApiController::class, 'update']);
-Route::delete('json/delete/{id}', [JsonApiController::class, 'destroy']);
+Route::get('contacts', [JsonApiController::class, 'show']);
+
+Route::post('contact', [JsonApiController::class, 'store']);
+Route::put('contact', [JsonApiController::class, 'update']);
+Route::delete('contact', [JsonApiController::class, 'destroy']);
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

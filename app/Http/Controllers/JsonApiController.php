@@ -53,7 +53,7 @@ class JsonApiController extends Controller
         $insertData->userEmail = $request->userEmail;
         $insertData->userPhone = $request->userPhone;
         $insertData->save();
-        return response()->json(['message' => 'data added successfully'], 200);
+        return response()->json(['message' => 'data added successfully', 'data' => $insertData], 200);
     }
 
     /**
@@ -86,10 +86,8 @@ class JsonApiController extends Controller
      * @param  \App\Models\jsonApi  $jsonApi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, jsonApi $jsonApi)
     {
-
-
         $request->validate([
             'UID' => 'required|max:150',
             'xapikey' => 'required|max:150',
@@ -99,35 +97,24 @@ class JsonApiController extends Controller
             'userPhone' => 'required|max:11',
         ]);
 
-        jsonApi::where('id', $id)->update([
-            'UID' => $request->UID,
-            'xapikey' => $request->xapikey,
-            'status' => 'user',
-            'userName' => $request->userName,
-            'userSurname' => $request->userSurname,
-            'userEmail' => $request->userEmail,
-            'userPhone' => $request->userPhone
-        ]);
 
-        return response()->json(['message' => 'data updated successfully'], 200);
+        if (jsonApi::find($request->id) != null) {
 
+            $updateData = jsonApi::find($request->id);
 
-        // if ($updateData) {
-
-        //     $updateData->update([
-        //         'UID' => $request->UID,
-        //         'xapikey' => $request->xapikey,
-        //         'status' => 'user',
-        //         'userName' => $request->userName,
-        //         'userSurname' => $request->userSurname,
-        //         'userEmail' => $request->userEmail,
-        //         'userPhone' => $request->userPhone
-        //     ]);
-
-        //     return response()->json(['message' => 'data updated successfully'], 200);
-        // } else {
-        //     return response()->json(['message' => 'data not found!'], 404);
-        // }
+            $updateData->update([
+                'UID' => $request->UID,
+                'xapikey' => $request->xapikey,
+                'status' => 'user',
+                'userName' => $request->userName,
+                'userSurname' => $request->userSurname,
+                'userEmail' => $request->userEmail,
+                'userPhone' => $request->userPhone
+            ]);
+            return response()->json(['message' => 'data updated successfully', 'data' => $updateData], 200);
+        } else {
+            return response()->json(['message' => 'data not found!'], 404);
+        }
     }
 
     /**
@@ -136,15 +123,14 @@ class JsonApiController extends Controller
      * @param  \App\Models\jsonApi  $jsonApi
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request)
     {
-        $data = jsonApi::where('id', $id);
-
-        if ($data) {
-            $data->delete();
+        if (jsonApi::find($request->id) != null) {
+            $data = jsonApi::find($request->id);
+            $data2 = jsonApi::find($request->id)->delete();
             return response()->json(['message' => 'deleted successfully', 'data' => $data], 200);
         } else {
-            return response()->json(['message' => 'data not found!', 'data' => $data], 404);
+            return response()->json(['message' => 'data not found!'], 404);
         }
     }
 }
