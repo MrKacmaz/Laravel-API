@@ -62,8 +62,9 @@ class JsonApiController extends Controller
      * @param  \App\Models\jsonApi  $jsonApi
      * @return \Illuminate\Http\Response
      */
-    public function show(jsonApi $jsonApi)
+    public function show(jsonApi $jsonApi, Request $request)
     {
+
         $data = jsonApi::all();
         return response()->json(['message' => 'successfull', 'data' => $data], 200);
     }

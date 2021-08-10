@@ -15,14 +15,17 @@ class JsonApi
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle(Request $request, Closure $next, $xapikey)
+    public function handle(Request $request, Closure $next)
     {
-        dd($xapikey);
+
+        $header = $request->header('xapikey');
+
         $allClients = Client::all();
         foreach ($allClients as $client) {
-            if ($client->xapikey === $xapikey && $request->isActive === 1) {
+            if ($client->xapikey == $header && $client->isActive == 1) {
                 return $next($request);
             }
         }
+        
     }
 }
